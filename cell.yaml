@@ -1,0 +1,159 @@
+# Investments cell: one of the ten finance services split from the retired finance_* tables (2026-10-12).
+# Holdings, market prices and valuations (account_id from finance-accounts).
+# Amounts are real (float) like every kit cell; cross-cell ids (account_id, ...) are plain bigints, not foreign keys.
+cell: investments
+title: Investments
+resources:
+  investment:
+    filters:
+    - investment_type
+    - owner_scope
+    - status
+    - account_id
+    fields:
+      name:
+        type: text
+        required: true
+        max_length: 200
+      investment_type:
+        type: enum
+        values:
+        - stock
+        - etf
+        - fund
+        - bond
+        - crypto
+        - real_estate
+        - business
+        - other
+        required: true
+      instrument_key:
+        type: text
+        max_length: 160
+      owner_scope:
+        type: enum
+        values:
+        - personal
+        - solo_empire
+        - venture
+        - client
+        - shared
+        default: personal
+      account_id:
+        type: bigint
+      quantity:
+        type: real
+        min: 0
+      cost_basis:
+        type: real
+        min: 0
+      current_value:
+        type: real
+        min: 0
+      currency: &id001
+        type: text
+        default: THB
+        max_length: 12
+      acquired_on:
+        type: date
+      status:
+        type: enum
+        values:
+        - planned
+        - active
+        - sold
+        - closed
+        default: active
+      metadata:
+        type: json
+        json: object
+      notes: &id002
+        type: text
+  market-price:
+    table: market_price_snapshots
+    plural: market-prices
+    filters:
+    - instrument_key
+    - quality
+    unique:
+    - - instrument_key
+      - as_of
+      - source_type
+    order: as_of
+    fields:
+      instrument_key:
+        type: text
+        required: true
+        max_length: 160
+      price:
+        type: real
+        min: 0
+        required: true
+      currency: *id001
+      as_of:
+        type: timestamp
+        required: true
+      source_type:
+        type: enum
+        values:
+        - exchange
+        - broker
+        - custodian
+        - manual
+        - derived
+        required: true
+      quality:
+        type: enum
+        values:
+        - verified
+        - provisional
+        - stale
+        - rejected
+        default: provisional
+      source_ref:
+        type: text
+      notes: *id002
+  valuation:
+    table: valuation_snapshots
+    filters:
+    - investment_id
+    - coverage_status
+    unique:
+    - - investment_id
+      - valuation_as_of
+    order: valuation_as_of
+    fields:
+      investment_id:
+        type: ref
+        to: investment
+        required: true
+      market_price_id:
+        type: ref
+        to: market-price
+      quantity:
+        type: real
+        min: 0
+      market_value:
+        type: real
+        min: 0
+      currency: *id001
+      valuation_as_of:
+        type: timestamp
+        required: true
+      valuation_method:
+        type: enum
+        values:
+        - market_price
+        - cost_basis
+        - manual
+        - unpriced
+        required: true
+      coverage_status:
+        type: enum
+        values:
+        - covered
+        - partial
+        - unpriced
+        - stale
+        - invalid
+        default: unpriced

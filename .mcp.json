@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "investments": {
+      "command": ".venv/bin/investments-mcp",
+      "args": []
+    }
+  }
+}
