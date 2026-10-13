@@ -1,5 +1,4 @@
-# investments
-
+# finance-investments-api
 The Investments cell: its own API (Railway, serverless) and its own Neon
 database, first generated from `cell.yaml` (one of the ten finance
 services split on 2026-10-12). It
@@ -8,8 +7,8 @@ HTTP with the caller's token.
 
 | | |
 |---|---|
-| API | Railway project `investments`, service `investments-api` (Serverless) |
-| Data | Neon project `investments`, database `investments` |
+| API | Railway project `finance-investments-api`, service `investments-api` (Serverless) |
+| Data | Neon project `finance-investments-api`, database `investments` |
 | Registry | solo-empire `repository-catalog/registries/online-systems.yaml` (`investments`) |
 
 ## API
