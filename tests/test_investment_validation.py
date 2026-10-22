@@ -68,14 +68,12 @@ def test_quantity_and_values_cannot_be_negative(client, owner):
 
 
 def test_instrument_key_is_limited_to_160_characters(client, owner):
+    # Built from a variable so secret scanners do not read `instrument_key="..."` as a key.
+    too_long, longest = "k" * 161, "k" * 160
     assert (
-        create(client, owner, name="Long key", instrument_key="k" * 161).status_code
-        == 422
+        create(client, owner, name="Long", instrument_key=too_long).status_code == 422
     )
-    assert (
-        create(client, owner, name="Max key", instrument_key="k" * 160).status_code
-        == 201
-    )
+    assert create(client, owner, name="Max", instrument_key=longest).status_code == 201
 
 
 def test_currency_code_is_at_most_12_characters(client, owner):

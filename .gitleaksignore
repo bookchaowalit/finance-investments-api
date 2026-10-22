@@ -1,0 +1,3 @@
+# False positives: test values built as "k" * 161 for instrument_key (not a secret), commit 6760d80.
+6760d80437f5fe2f8143a5374307b62b32699129:tests/test_investment_validation.py:generic-api-key:72
+6760d80437f5fe2f8143a5374307b62b32699129:tests/test_investment_validation.py:generic-api-key:76
