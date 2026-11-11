@@ -5,6 +5,8 @@ cell: investments
 title: Investments
 resources:
   investment:
+    legacy_columns:
+      scope: owner_scope
     filters:
     - investment_type
     - scope
