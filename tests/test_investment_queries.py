@@ -71,7 +71,7 @@ def test_selling_an_investment_keeps_its_cost_basis(client, owner):
     sold = client.patch(
         f"{INVESTMENTS}/{holding['id']}",
         headers=owner,
-        json={"status": "sold", "current_value": 0},
+        json={"status": "sold", "current_value": 0, "expected_version": 1},
     )
     assert sold.status_code == 200, sold.text
     assert sold.json()["status"] == "sold"
@@ -268,6 +268,7 @@ def test_pricing_a_valuation_later_bumps_its_version(client, owner):
             "valuation_method": "market_price",
             "coverage_status": "covered",
             "market_value": 250,
+            "expected_version": 1,
         },
     )
     assert priced.status_code == 200, priced.text
