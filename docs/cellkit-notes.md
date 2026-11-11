@@ -27,6 +27,7 @@ Commits touching `src/cellkit/` or `cell.yaml`:
 | Inline publish failure → Sentry | no: no resource has graph events, so the inline publisher never runs. The line is in the copy but inert. | — |
 | `ranges` rule | no range declared in `cell.yaml`; the code is inert here. | — |
 | Column limits / finite reals | yes: `investment.cost_basis`, `investment.current_value`, `investment.quantity`, `market-price.price`, `valuation.market_value`, `valuation.quantity` | 0548c5a · `.venv/bin/pytest -q -k numbers_fit` · `ValueError: Out of range float values are not JSON compliant: nan` |
+| Security review P3s (2026-11-11): import with `legacy_id` needs `<cell>.<resource>:admin` (it picks the id and may backdate timestamps; the owner grants it only for an import), a PDP 403 is a 403 not a 503, no `/docs`/`/redoc` pages (`/openapi.json` stays public) | yes: shared cellkit, same in all ten finance cells | `.venv/bin/pytest -q -k 'needs_admin or docs_pages or platform_refusal'` · red without the fix: 4 failed |
 
 ## Deliberately not applied
 
