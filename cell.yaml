@@ -5,6 +5,8 @@ cell: investments
 title: Investments
 resources:
   investment:
+    # SPEC-005: reference data only in events (no amounts, names or notes).
+    graph: [investment_type, scope, account_id, currency, acquired_on, status]
     legacy_columns:
       scope: owner_scope
     filters:
@@ -66,6 +68,8 @@ resources:
       notes: &id002
         type: text
   market-price:
+    # SPEC-005: reference data only in events (no amounts, names or notes).
+    graph: [currency, source_type, quality]
     table: market_price_snapshots
     plural: market-prices
     filters:
@@ -110,6 +114,8 @@ resources:
         type: text
       notes: *id002
   valuation:
+    # SPEC-005: reference data only in events (no amounts, names or notes).
+    graph: [investment_id, market_price_id, currency, valuation_method, coverage_status]
     table: valuation_snapshots
     filters:
     - investment_id
