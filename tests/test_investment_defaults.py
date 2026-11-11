@@ -45,7 +45,8 @@ def test_two_investments_may_share_a_name_and_instrument(client, owner):
     assert second.status_code == 201, second.text
 
 
-def test_account_id_is_a_plain_number_not_a_checked_reference(client, owner):
+def test_account_id_round_trips_when_the_reference_is_trusted(client, owner):
+    # The harness trusts cross-service ids; SPEC-006 checks are in tests/test_cross_references.py.
     holding = create(client, owner, name="Held in", account_id=424242)
     assert holding.status_code == 201, holding.text
     assert holding.json()["account_id"] == 424242

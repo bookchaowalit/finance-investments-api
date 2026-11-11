@@ -39,6 +39,8 @@ resources:
         max_length: 64
         default: ''
       account_id:
+        references: finance-accounts.account
+        refuse_status: [closed]
         type: bigint
       quantity:
         type: decimal
