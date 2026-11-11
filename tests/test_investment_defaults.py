@@ -16,7 +16,7 @@ def test_new_investment_defaults_to_personal_active_thb(client, owner):
     response = create(client, owner, name="Fresh")
     assert response.status_code == 201, response.text
     holding = response.json()
-    assert holding["owner_scope"] == "personal"
+    assert holding["scope"] == ""
     assert holding["status"] == "active"
     assert holding["currency"] == "THB"
     assert holding["version"] == 1
@@ -33,9 +33,9 @@ def test_investment_values_keep_their_decimal_value(client, owner):
         cost_basis=1000.25,
         current_value=1234.56,
     ).json()
-    assert holding["quantity"] == 12.5
-    assert holding["cost_basis"] == 1000.25
-    assert holding["current_value"] == 1234.56
+    assert holding["quantity"] == "12.5000000000"
+    assert holding["cost_basis"] == "1000.2500"
+    assert holding["current_value"] == "1234.5600"
 
 
 def test_two_investments_may_share_a_name_and_instrument(client, owner):
@@ -133,7 +133,7 @@ def test_a_valuation_may_cite_a_market_price(client, owner):
     )
     assert valuation.status_code == 201, valuation.text
     assert valuation.json()["market_price_id"] == price["id"]
-    assert valuation.json()["market_value"] == 100.5
+    assert valuation.json()["market_value"] == "100.5000"
 
 
 def test_an_investment_has_one_valuation_per_moment(client, owner):

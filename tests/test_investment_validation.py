@@ -54,9 +54,12 @@ def test_investment_status_must_be_a_known_status(client, owner):
     assert response.status_code == 422
 
 
-def test_owner_scope_must_be_a_known_scope(client, owner):
-    response = create(client, owner, name="Odd scope", owner_scope="family")
-    assert response.status_code == 422
+def test_scope_is_a_free_label_of_at_most_64_characters(client, owner):
+    labelled = create(client, owner, scope="family")
+    assert labelled.status_code == 201, labelled.text
+    assert labelled.json()["scope"] == "family"
+    assert create(client, owner, scope="x" * 65).status_code == 422
+    assert create(client, owner, owner_scope="venture").status_code == 422
 
 
 def test_quantity_and_values_cannot_be_negative(client, owner):

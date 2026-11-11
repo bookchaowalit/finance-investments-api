@@ -23,10 +23,10 @@ def test_list_investments_filters_by_type(client, owner):
 
 
 def test_list_investments_filters_by_status_and_scope(client, owner):
-    create(client, owner, name="Sold stock", status="sold", owner_scope="venture")
-    create(client, owner, name="Held stock", owner_scope="venture")
+    create(client, owner, name="Sold stock", status="sold", scope="venture")
+    create(client, owner, name="Held stock", scope="venture")
     listed = client.get(
-        INVESTMENTS, headers=owner, params={"status": "sold", "owner_scope": "venture"}
+        INVESTMENTS, headers=owner, params={"status": "sold", "scope": "venture"}
     )
     assert listed.status_code == 200, listed.text
     assert [item["name"] for item in listed.json()["items"]] == ["Sold stock"]
@@ -75,7 +75,7 @@ def test_selling_an_investment_keeps_its_cost_basis(client, owner):
     )
     assert sold.status_code == 200, sold.text
     assert sold.json()["status"] == "sold"
-    assert sold.json()["cost_basis"] == 500
+    assert sold.json()["cost_basis"] == "500.0000"
     assert sold.json()["version"] == 2
 
 
@@ -95,7 +95,7 @@ def test_a_negative_value_is_refused_on_investment_update(client, owner):
     path = f"{INVESTMENTS}/{holding['id']}"
     refused = client.patch(path, headers=owner, json={"current_value": -1})
     assert refused.status_code == 422
-    assert client.get(path, headers=owner).json()["current_value"] == 900
+    assert client.get(path, headers=owner).json()["current_value"] == "900.0000"
 
 
 def test_an_investment_with_valuations_cannot_be_deleted(client, owner):

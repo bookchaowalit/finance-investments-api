@@ -23,7 +23,7 @@ api
 ## Product Purpose
 
 The list of holdings and how they are valued: what the owner holds (stock, etf, fund, bond, crypto,
-real_estate, business, other) per owner scope, the market prices seen for an instrument at a moment
+real_estate, business, other) per scope label, the market prices seen for an instrument at a moment
 with their source and quality, and dated valuations of a holding that may cite one of those prices.
 `account_id` can name the account in `finance-accounts-api` that holds the investment.
 
@@ -47,7 +47,11 @@ workspace-scoped, so the same service can serve other tenants without code chang
 
 ## Capabilities and Constraints
 
-- `/v1/investments`: list (filters `investment_type`, `owner_scope`, `status`, `account_id`;
+- SPEC-003: amounts are exact `money` (`numeric(19,4)`) and quantities, unit prices and rates are
+  `decimal` (`numeric(30,10)`); both are JSON strings in responses (`"1234.5600"`). Currency fields
+  are ISO 4217 codes (three upper-case letters). `scope` is a free label the workspace defines (at
+  most 64 characters, default empty).
+- `/v1/investments`: list (filters `investment_type`, `scope`, `status`, `account_id`;
   ordered by id), stats (grouped by one of those filters), get, get-by-legacy-id, create (with
   `Idempotency-Key`), patch (with `expected_version`), delete.
 - `/v1/market-prices`: the same routes; filters `instrument_key`, `quality`; listed by `as_of`
@@ -55,7 +59,7 @@ workspace-scoped, so the same service can serve other tenants without code chang
 - `/v1/valuations`: the same routes; filters `investment_id`, `coverage_status`; listed by
   `valuation_as_of` (then id).
 - Investment rules: `name` (at most 200 characters) and `investment_type` are required; `status` is
-  planned, active (default), sold or closed; `owner_scope` defaults to personal; `quantity`,
+  planned, active (default), sold or closed; `scope` defaults to empty; `quantity`,
   `cost_basis` and `current_value` cannot be negative; `instrument_key` is at most 160 characters;
   `currency` defaults to THB; `metadata` is a JSON object. Names are not unique. `account_id` is a
   plain number, not a foreign key.

@@ -1,13 +1,13 @@
 # Investments cell: one of the ten finance services split from the retired finance_* tables (2026-10-12).
 # Holdings, market prices and valuations (account_id from finance-accounts).
-# Amounts are real (float) like every kit cell; cross-cell ids (account_id, ...) are plain bigints, not foreign keys.
+# Amounts are exact (money = numeric(19,4), decimal = numeric(30,10); SPEC-003); cross-cell ids (account_id, ...) are plain bigints, not foreign keys.
 cell: investments
 title: Investments
 resources:
   investment:
     filters:
     - investment_type
-    - owner_scope
+    - scope
     - status
     - account_id
     fields:
@@ -30,30 +30,24 @@ resources:
       instrument_key:
         type: text
         max_length: 160
-      owner_scope:
-        type: enum
-        values:
-        - personal
-        - solo_empire
-        - venture
-        - client
-        - shared
-        default: personal
+      scope:
+        type: text
+        max_length: 64
+        default: ''
       account_id:
         type: bigint
       quantity:
-        type: real
+        type: decimal
         min: 0
       cost_basis:
-        type: real
+        type: money
         min: 0
       current_value:
-        type: real
+        type: money
         min: 0
       currency: &id001
-        type: text
+        type: currency
         default: THB
-        max_length: 12
       acquired_on:
         type: date
       status:
@@ -86,7 +80,7 @@ resources:
         required: true
         max_length: 160
       price:
-        type: real
+        type: decimal
         min: 0
         required: true
       currency: *id001
@@ -131,10 +125,10 @@ resources:
         type: ref
         to: market-price
       quantity:
-        type: real
+        type: decimal
         min: 0
       market_value:
-        type: real
+        type: money
         min: 0
       currency: *id001
       valuation_as_of:

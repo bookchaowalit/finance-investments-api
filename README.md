@@ -18,7 +18,7 @@ Every resource has list, stats, get, get-by-legacy-id, create, patch and delete
 
 | Path | Resource | Filters |
 |---|---|---|
-| `/v1/investments` | investment | `investment_type`, `owner_scope`, `status`, `account_id` |
+| `/v1/investments` | investment | `investment_type`, `scope`, `status`, `account_id` |
 | `/v1/market-prices` | market-price | `instrument_key`, `quality` |
 | `/v1/valuations` | valuation | `investment_id`, `coverage_status` |
 
