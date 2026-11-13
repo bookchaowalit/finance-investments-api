@@ -50,6 +50,11 @@ jobs:
           INVESTMENTS_KAFKA_CA_PEM: ${{ secrets.INVESTMENTS_KAFKA_CA_PEM }}
           INVESTMENTS_KAFKA_USERNAME: ${{ secrets.INVESTMENTS_KAFKA_USERNAME }}
           INVESTMENTS_KAFKA_PASSWORD: ${{ secrets.INVESTMENTS_KAFKA_PASSWORD }}
+          # SPEC-002 signed events: the signing seed is a secret; the pinned public keys and the
+          # mode (off/report/enforce) are repository variables. Unset = unsigned, unchecked.
+          INVESTMENTS_EVENT_SIGNING_KEY: ${{ secrets.INVESTMENTS_EVENT_SIGNING_KEY }}
+          INVESTMENTS_EVENT_KEYS: ${{ vars.INVESTMENTS_EVENT_KEYS }}
+          INVESTMENTS_EVENT_SIGNATURES: ${{ vars.INVESTMENTS_EVENT_SIGNATURES }}
         run: |
           set +e
           .venv/bin/investments-relay > "$RUNNER_TEMP/relay.json" 2> "$RUNNER_TEMP/relay.err"
